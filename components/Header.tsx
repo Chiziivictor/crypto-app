@@ -6,12 +6,12 @@ import { ConnectButton } from "web3uikit";
 const styles = {
   header: `bg-[#17171A] text-white h-20 flex gap-[100px] w-full p-[30px]`,
   headerWrapper: `flex justify-center h-full max-w-screen-xl mx-auto px-4`,
-  nav: `flex justify-center items-center gap-[20px] mr-8 text-sm`,
+  nav: `flex justify-center items-center gap-[20px]`,
   navItem: `relative mr-1 cursor-pointer hover:opacity-60`,
-  navLink: ``,
+  navLink: `text-white flex mx-[10px]`,
   badge: `rounded-full bg-blue-600 h-1 w-1 absolute top-1 bottom-5 right-0 ring-4`,
   inputContainer: `flex justify-center items-center p-2 rounded bg-[#232637]`,
-  input: `bg-transparent outline-none text-white w-70 ml-3 text-sm`,
+  input: `bg-transparent outline-none text-white w-70 ml-3`,
 };
 
 const Header: React.FC = () => {
