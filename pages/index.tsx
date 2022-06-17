@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import CoinTable from "../components/CoinTable";
 import Header from "../components/Header";
 import Trending from "../components/Trending";
 
@@ -9,6 +10,7 @@ const Home: NextPage = () => {
       <div className="mt-10" />
       <Trending />
       <div className="mt-20"></div>
+      <CoinTable />
     </div>
   );
 };

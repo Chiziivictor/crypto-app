@@ -4,6 +4,10 @@
 
 body {
   background: linear-gradient(to bottom, #212430, #17171a);
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
+}
+
+th {
+  padding-bottom: 10px;
 }
