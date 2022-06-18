@@ -45,9 +45,15 @@ const CoinTable: React.FC = () => {
           {/* TABLE HEADER */}
           <CoinTableHeader />
           {loading ? (
-            <caption className="flex justify-center w-full">
-              <h1 className="text-white">Loading...</h1>
-            </caption>
+            <tbody>
+              <tr>
+                <td colSpan={8}>
+                  <div className="flex justify-center items-center">
+                    Loading...
+                  </div>
+                </td>
+              </tr>
+            </tbody>
           ) : (
             // TABLE ROWS
             <tbody>

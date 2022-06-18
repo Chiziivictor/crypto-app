@@ -4,10 +4,21 @@ import React from "react";
 import Star from "../assets/svg/star";
 import More from "../assets/svg/more";
 import Rate from "./UI/Rate";
-import CoinNameRow from "./CoinNameRow";
+import btc from "../assets/btc.png";
+import eth from "../assets/eth.png";
+import usdc from "../assets/usdc.png";
+import usdt from "../assets/usdt.png";
+import xrp from "../assets/xrp.png";
+import cardano from "../assets/cardano.png";
+import tera from "../assets/tera.png";
+import solana from "../assets/solana.png";
+import avalanche from "../assets/avalanche.png";
+import bnb from "../assets/bnb.png";
 
 const styles = {
   tableRow: `text-white border-b border-gray-800 text-[0.93rem]`,
+  coinNameRow: `flex items-center`,
+  buyButton: `bg-[#1A1F3A] text-[#6188FF] p-1 px-3 text-sm rounded-lg cursor-pointer hover:opacity-50`,
 };
 
 interface CoinTableRowProps {
@@ -57,8 +68,129 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
     return Number(num.toFixed(2)).toLocaleString();
   };
 
-  const formatPercentage = (num: number) => {
-    return Number(num.toFixed(2)).toLocaleString() + "%";
+  const coinIconHandler = () => {
+    switch (coinName) {
+      case "Bitcoin":
+        return (
+          <Image
+            className="rounded-full"
+            src={btc}
+            alt="btc"
+            width={20}
+            height={20}
+          />
+        );
+      case "Ethereum":
+        return (
+          <Image
+            className="rounded-full"
+            src={eth}
+            alt="eth"
+            width={20}
+            height={20}
+          />
+        );
+      case "Tether":
+        return (
+          <Image
+            className="rounded-full"
+            src={usdt}
+            alt="usdt"
+            width={20}
+            height={20}
+          />
+        );
+      case "USD Coin":
+        return (
+          <Image
+            className="rounded-full"
+            src={usdc}
+            alt="usdc"
+            width={20}
+            height={20}
+          />
+        );
+      case "BNB":
+        return (
+          <Image
+            className="rounded-full"
+            src={bnb}
+            alt="bnb"
+            width={20}
+            height={20}
+          />
+        );
+      case "XRP":
+        return (
+          <Image
+            className="rounded-full"
+            src={xrp}
+            alt="xrp"
+            width={20}
+            height={20}
+          />
+        );
+      case "Cardano":
+        return (
+          <Image
+            className="rounded-full"
+            src={cardano}
+            alt="cardano"
+            width={20}
+            height={20}
+          />
+        );
+      case "Tera":
+        return (
+          <Image
+            className="rounded-full"
+            src={tera}
+            alt="tera"
+            width={20}
+            height={20}
+          />
+        );
+      case "Solana":
+        return (
+          <Image
+            className="rounded-full"
+            src={solana}
+            alt="solana"
+            width={20}
+            height={20}
+          />
+        );
+      case "Avalanche":
+        return (
+          <Image
+            className="rounded-full"
+            src={avalanche}
+            alt="avalanche"
+            width={20}
+            height={20}
+          />
+        );
+      case "Binance":
+        return (
+          <Image
+            className="rounded-full"
+            src={bnb}
+            alt="bnd"
+            width={20}
+            height={20}
+          />
+        );
+      default:
+        return (
+          <Image
+            className="rounded-full"
+            src={btc}
+            alt="btc"
+            width={20}
+            height={20}
+          />
+        );
+    }
   };
 
   return (
@@ -72,9 +204,21 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
         </td>
         {coinIcon && coinIcon ? (
           <td className="cursor-pointer">
-            <div onClick={viewCoinDetails}>
-              <Image src={coinIcon} alt={coinName} width={20} height={20} />
-              <p>{coinName}</p>
+            <div className={styles.coinNameRow} onClick={viewCoinDetails}>
+              <div className="mr-3 flex" onClick={viewCoinDetails}>
+                <div className="mr-2">{coinIconHandler()}</div>
+                {coinName}
+              </div>
+
+              <p>
+                {coinName === "Bitcoin" ||
+                coinName === "Ethereum" ||
+                coinName === "Tether" ? (
+                  <span className={styles.buyButton}>Buy</span>
+                ) : (
+                  <></>
+                )}
+              </p>
             </div>
           </td>
         ) : (
