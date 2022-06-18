@@ -5,8 +5,11 @@ import ChevronDown from "../assets/svg/chevronDown";
 import Info from "../assets/svg/info";
 import { CoinMarketContext } from "../context/context";
 import CoinTableHeader from "./CoinTableHeader";
-import CoinTableRow from "./CoinTableRow";
 import Rate from "./UI/Rate";
+
+const styles = {
+  tableRow: `text-white border-b border-gray-800 text-[0.93rem]`,
+};
 
 const CoinTable: React.FC = () => {
   const [coinData, setCoinData] = useState<any[]>([]);
@@ -18,26 +21,38 @@ const CoinTable: React.FC = () => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      let apiResponse = await getTopTenCoins();
-      let filteredResponse = [];
-
-      for (let i = 0; i < apiResponse.length; i++) {
-        const element = apiResponse[i];
-        if (element.cmc_rank <= 10) filteredResponse.push(element);
-      }
-
-      setCoinData(filteredResponse);
+      let response = await getTopTenCoins();
+      setCoinData(response.data);
     } catch (e) {
-      console.log((e as Error).message);
+      let error = (e as Error).message;
+      console.log(error);
     }
     setLoading(false);
   }, [getTopTenCoins]);
 
-  console.log(coinData);
-
   useEffect(() => {
     fetchData();
   }, []);
+
+  const viewCoinInfo = (coin: any) => {
+    router.push(
+      `/currencies/info?symbol=${coin.id}&coin=${coin.name}&price=${coin.price}`
+    );
+  };
+
+  const viewCoinPrice = (coin: any) => {
+    router.push(
+      `/currencies/price?symbol=${coin.id}&coin=${coin.name}&price=${coin.price}`
+    );
+  };
+
+  const formatNumber = (num: number) => {
+    return Number(num.toFixed(2)).toLocaleString();
+  };
+
+  const formatPercentage = (num: number) => {
+    return Number(num.toFixed(2)).toLocaleString() + "%";
+  };
 
   console.log(typeof coinData, coinData);
 
@@ -54,28 +69,29 @@ const CoinTable: React.FC = () => {
           ) : (
             // TABLE ROWS
             <tbody>
-              {coinData && coinData ? (
-                coinData.map((coin: any, idx: number) => (
-                  <CoinTableRow
-                    key={idx}
-                    starNum={coin.cmc_rank}
-                    coinName={coin.name}
-                    coinSymbol={coin.symbol}
-                    coinIcon={btc}
-                    showBuy={true}
-                    hRate={coin.quote.USD.percent_change_24h}
-                    dRate={coin.quote.USD.percent_change_7d}
-                    hRateIsIncrement={true}
-                    price={coin.quote.USD.price}
-                    marketCapValue={coin.quote.USD.market_cap}
-                    volumeCryptoValue={coin.quote.USD.volume_24h}
-                    volumeValue={coin.total_supply}
-                    circulatingSupply={coin.circulating_supply}
-                  />
-                ))
-              ) : (
-                <></>
-              )}
+              {coinData.map((coin: any, idx: number) => (
+                <tr key={idx} className={styles.tableRow}>
+                  <td className="p-2">{coin.market_cap_rank}</td>
+                  <td className="flex items-center p-2 pr-20">
+                    <span className="mr-4">
+                      <Image src={coin.image} width={20} height={20} />
+                    </span>
+                    {coin.name}
+                  </td>
+                  <td className="p-2">${formatNumber(coin.current_price)}</td>
+                  <td className="p-2">
+                    <Rate
+                      isIncrement={coin.price_change_percentage_24h > 0}
+                      rate={formatPercentage(coin.price_change_percentage_24h)}
+                    />
+                  </td>
+                  <td className="p-2">${formatNumber(coin.market_cap)}</td>
+                  <td className="p-2">${formatNumber(coin.total_volume)}</td>
+                  <td className="p-2">
+                    {formatNumber(coin.circulating_supply)}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           )}
         </table>

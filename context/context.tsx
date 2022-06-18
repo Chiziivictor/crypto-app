@@ -15,7 +15,7 @@ export const CoinMarketProvider: React.FC<ProviderProps> = ({ children }) => {
     try {
       const res = await fetch("api/getTopTen");
       const data = await res.json();
-      return data.data.data;
+      return data;
     } catch (err) {
       console.log((err as Error).message);
     }
