@@ -1,6 +1,10 @@
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import Star from "../assets/svg/star";
+import More from "../assets/svg/more";
+import Rate from "./UI/Rate";
+import CoinNameRow from "./CoinNameRow";
 
 const styles = {
   tableRow: `text-white border-b border-gray-800 text-[0.93rem]`,
@@ -9,13 +13,12 @@ const styles = {
 interface CoinTableRowProps {
   starNum: string;
   coinName: string;
-  coinIcon: string;
+  coinIcon: StaticImageData;
   coinSymbol: string;
   price: number;
   showBuy: boolean;
   hRate: number;
   dRate: number;
-  hRateIsIncrement: boolean;
   marketCapValue: number;
   volumeValue: number;
   volumeCryptoValue: number;
@@ -31,7 +34,6 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
   showBuy,
   hRate,
   dRate,
-  hRateIsIncrement,
   marketCapValue,
   volumeValue,
   volumeCryptoValue,
@@ -39,19 +41,19 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
 }) => {
   const router = useRouter();
 
-  const viewCoinInfo = (coin: any) => {
+  const viewCoinDetails = () => {
     router.push(
-      `/currencies/info?symbol=${coin.id}&coin=${coin.name}&price=${coin.price}`
+      `/currencies/info?symbol=${coinSymbol}&coin=${coinName}&price=${price}`
     );
   };
 
-  const viewCoinPrice = (coin: any) => {
+  const viewPrice = () => {
     router.push(
-      `/currencies/price?symbol=${coin.id}&coin=${coin.name}&price=${coin.price}`
+      `/currencies/price?symbol=${coinSymbol}&coin=${coinName}&price=${price}`
     );
   };
 
-  const formatNumber = (num: number) => {
+  const formatNum = (num: number) => {
     return Number(num.toFixed(2)).toLocaleString();
   };
 
@@ -60,27 +62,60 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
   };
 
   return (
-    <>
-      <tr key={idx} className={styles.tableRow}>
-        <td className="p-2">{}</td>
-        <td className="flex items-center p-2 pr-20">
-          <span className="mr-4">
-            <Image src={} width={20} height={20} />
-          </span>
-          {}
+    <tr className={styles.tableRow}>
+      <>
+        <td scope="row">
+          <div className="flex gap-4">
+            <Star />
+            {starNum}
+          </div>
         </td>
-        <td className="p-2">${formatNumber()}</td>
-        <td className="p-2">
-          <Rate
-            isIncrement={ > 0}
-            rate={formatPercentage()}
-          />
+        {coinIcon && coinIcon ? (
+          <td className="cursor-pointer">
+            <div onClick={viewCoinDetails}>
+              <Image src={coinIcon} alt={coinName} width={20} height={20} />
+              <p>{coinName}</p>
+            </div>
+          </td>
+        ) : (
+          <></>
+        )}
+
+        <td className="cursor-pointer" onClick={viewPrice}>
+          <p>${formatNum(price)}</p>
         </td>
-        <td className="p-2">${formatNumber()}</td>
-        <td className="p-2">${formatNumber()}</td>
-        <td className="p-2">{formatNumber()}</td>
-      </tr>
-    </>
+        <td>
+          <Rate isIncrement={hRate > 0} rate={`${formatNum(hRate)}%`} />
+        </td>
+        <td>
+          <Rate isIncrement={dRate > 0} rate={`${formatNum(dRate)}%`} />
+        </td>
+
+        <td>
+          <div>
+            <p>${formatNum(marketCapValue)}</p>
+          </div>
+        </td>
+
+        <td>
+          <div>
+            <p>{formatNum(volumeValue)}</p>
+            <p className="text-gray-400">
+              {formatNum(volumeCryptoValue)} {coinSymbol}
+            </p>
+          </div>
+        </td>
+
+        <td>
+          <div>
+            <p>{formatNum(circulatingSupply)}</p>
+          </div>
+        </td>
+        <td className="cursor-pointer">
+          <More />
+        </td>
+      </>
+    </tr>
   );
 };
 

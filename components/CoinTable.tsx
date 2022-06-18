@@ -1,12 +1,9 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import ChevronDown from "../assets/svg/chevronDown";
-import Info from "../assets/svg/info";
 import { CoinMarketContext } from "../context/context";
 import CoinTableHeader from "./CoinTableHeader";
 import CoinTableRow from "./CoinTableRow";
-import Rate from "./UI/Rate";
+import btc from "../assets/btc.png";
 
 const CoinTable: React.FC = () => {
   const [coinData, setCoinData] = useState<any[]>([]);
@@ -55,7 +52,7 @@ const CoinTable: React.FC = () => {
             // TABLE ROWS
             <tbody>
               {coinData && coinData ? (
-                coinData.map((coin: any, idx: number) => (
+                coinData.map((coin, idx: number) => (
                   <CoinTableRow
                     key={idx}
                     starNum={coin.cmc_rank}
@@ -65,7 +62,6 @@ const CoinTable: React.FC = () => {
                     showBuy={true}
                     hRate={coin.quote.USD.percent_change_24h}
                     dRate={coin.quote.USD.percent_change_7d}
-                    hRateIsIncrement={true}
                     price={coin.quote.USD.price}
                     marketCapValue={coin.quote.USD.market_cap}
                     volumeCryptoValue={coin.quote.USD.volume_24h}
