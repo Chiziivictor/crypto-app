@@ -3,7 +3,7 @@ import ChevronDown from "../assets/svg/chevronDown";
 import Info from "../assets/svg/info";
 
 const styles = {
-  textIcon: `flex items-center pl-4`,
+  textIcon: `flex items-center`,
 };
 
 const CoinTableHeader: React.FC = () => {
@@ -14,15 +14,10 @@ const CoinTableHeader: React.FC = () => {
           <b># &nbsp;</b>
           <ChevronDown fill={"white"} />
         </th>
-        <th>
-          <div className={`${styles.textIcon} pl-8`}>Name</div>
-        </th>
-        <th>
-          <div className={styles.textIcon}>Price</div>
-        </th>
-        <th>
-          <div className={styles.textIcon}>24h %</div>
-        </th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>24h %</th>
+        <th>7d %</th>
         <th>
           <div className={styles.textIcon}>
             <p className="mr-2">Market Cap</p>
