@@ -28,8 +28,6 @@ export const CoinMarketProvider: React.FC<ProviderProps> = ({ children }) => {
       const res = await fetch(`api/getTrending`);
       const data = await res.json();
 
-      console.log(data.data.coins);
-
       return data.data.coins;
     } catch (err) {
       console.log((err as Error).message);

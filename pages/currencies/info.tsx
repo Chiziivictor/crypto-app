@@ -3,13 +3,14 @@ import Header from "../../components/Header";
 import solana from "../../assets/solana.png";
 import Usd from "../../assets/svg/usd";
 import CoinPriceConverter from "../../components/CoinPriceConverter";
+import Example from "../../components/HeaderTailwind";
 
 const styles = {
   activeTab: `p-1 px-2 mr-2 rounded-lg bg-[#1771924]`,
   tabItem: `px-2`,
   tabContainer: `flex items-center p-2 rounded-xl bg-[#222531] border border-gray-500/10 text-sm`,
   info: `min-h-screen`,
-  main: `text-white mx-auto max-w-screen-2xl`,
+  main: `text-white mt-16 max-w-screen-2xl mx-4 sm:mx-8 md:mx-16`,
   flexStart: `flex items-start`,
   flexBetwwen: `flex justify-between`,
   flexBetwwenCenter: `flex justify-between items-center`,
@@ -18,9 +19,9 @@ const styles = {
 };
 
 const Currencies: React.FC = () => {
-  const [coinName, setCoinName] = useState("");
-  const [coinPrice, setCoinPrice] = useState("");
-  const [coinSymbol, setCoinSymbol] = useState("");
+  const [coinName, setCoinName] = useState<string | null>(null);
+  const [coinPrice, setCoinPrice] = useState<string | null>("");
+  const [coinSymbol, setCoinSymbol] = useState<string | null>("");
 
   useEffect(() => {
     getUrlData();
@@ -30,16 +31,18 @@ const Currencies: React.FC = () => {
     const querystring = window.location.search;
     const urlParams = new URLSearchParams(querystring);
 
+    const price = urlParams.get("price");
+
     setCoinName(urlParams.get("coin"));
-    setCoinPrice(urlParams.get("price").toLocaleString());
+    price && setCoinPrice(price.toLocaleString());
     setCoinSymbol(urlParams.get("symbol"));
   };
 
   return (
     <div className={styles.info}>
-      <Header />
+      <Example />
       <main className={styles.main}>
-        <div className={styles.flexStart}>
+        <div>
           <div className={styles.tabContainerWrapper}>
             <div className={styles.flexBetwwen}>
               <div className={styles.tabContainer}>
@@ -94,7 +97,7 @@ const Currencies: React.FC = () => {
             />
           </div>
 
-          <div className="pt-10 ml-5">{/* <Chat/> */}</div>
+          {/* <div className="pt-10 ml-5"><Chat/></div> */}
         </div>
       </main>
     </div>

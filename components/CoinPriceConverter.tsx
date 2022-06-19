@@ -19,13 +19,13 @@ const styles = {
 };
 
 interface CoinPriceConverterProps {
-  from: string;
-  fromSymbol: string;
+  from: string | null;
+  fromSymbol: string | null;
   fromLogo: StaticImageData;
   to: string;
   toLogo: React.ReactNode;
   toSymbol: string;
-  price: string;
+  price: string | null;
 }
 
 const CoinPriceConverter: React.FC<CoinPriceConverterProps> = ({

@@ -25,10 +25,8 @@ const CoinTable: React.FC = () => {
     fetchData();
   }, []);
 
-  console.log(typeof coinData, coinData);
-
   return (
-    <div className="text-white font-bold">
+    <div className="text-white font-bold w-full overflow-x-scroll">
       <div className="mx-auto max-w-screen-2xl">
         <table className="w-full">
           {/* TABLE HEADER */}
