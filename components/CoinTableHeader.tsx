@@ -14,9 +14,7 @@ const CoinTableHeader: React.FC = () => {
           <b># &nbsp;</b>
           <ChevronDown fill={"white"} />
         </th>
-        <th scope="col" className="w-[50%]">
-          Name
-        </th>
+        <th scope="col">Name</th>
         <th scope="col">Price</th>
         <th scope="col">24h %</th>
         <th scope="col">
