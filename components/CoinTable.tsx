@@ -10,27 +10,16 @@ const CoinTable: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { getTopTenCoins } = useContext(CoinMarketContext);
 
-  const router = useRouter();
-
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      let apiResponse = await getTopTenCoins();
-      let filteredResponse = [];
-
-      for (let i = 0; i < apiResponse.length; i++) {
-        const element = apiResponse[i];
-        if (element.cmc_rank <= 10) filteredResponse.push(element);
-      }
-
-      setCoinData(filteredResponse);
+      const res = await getTopTenCoins();
+      setCoinData(res);
     } catch (e) {
       console.log((e as Error).message);
     }
     setLoading(false);
   }, [getTopTenCoins]);
-
-  console.log(coinData);
 
   useEffect(() => {
     fetchData();
@@ -57,27 +46,22 @@ const CoinTable: React.FC = () => {
           ) : (
             // TABLE ROWS
             <tbody>
-              {coinData && coinData ? (
-                coinData.map((coin, idx: number) => (
+              {coinData.length > 0 &&
+                coinData?.map((coin, idx: number) => (
                   <CoinTableRow
                     key={idx}
-                    starNum={coin.cmc_rank}
+                    starNum={coin.market_cap_rank}
                     coinName={coin.name}
                     coinSymbol={coin.symbol}
-                    coinIcon={btc}
-                    showBuy={true}
-                    hRate={coin.quote.USD.percent_change_24h}
-                    dRate={coin.quote.USD.percent_change_7d}
-                    price={coin.quote.USD.price}
-                    marketCapValue={coin.quote.USD.market_cap}
-                    volumeCryptoValue={coin.quote.USD.volume_24h}
+                    coinIcon={coin.image}
+                    hRate={coin.market_cap_change_percentage_24h}
+                    price={coin.current_price}
+                    marketCapValue={coin.market_cap}
+                    volumeCryptoValue={coin.total_volume}
                     volumeValue={coin.total_supply}
-                    circulatingSupply={coin.circulating_supply}
+                    circulatingPrice={coin.circulating_supply}
                   />
-                ))
-              ) : (
-                <></>
-              )}
+                ))}
             </tbody>
           )}
         </table>

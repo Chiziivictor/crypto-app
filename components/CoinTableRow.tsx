@@ -16,7 +16,7 @@ import avalanche from "../assets/avalanche.png";
 import bnb from "../assets/bnb.png";
 
 const styles = {
-  tableRow: `text-white border-b border-gray-800 text-[0.93rem]`,
+  tableRow: `text-white border-b border-gray-800 text-[0.93rem] p-4`,
   coinNameRow: `flex items-center`,
   buyButton: `bg-[#1A1F3A] text-[#6188FF] p-1 px-3 text-sm rounded-lg cursor-pointer hover:opacity-50`,
 };
@@ -27,13 +27,11 @@ interface CoinTableRowProps {
   coinIcon: StaticImageData;
   coinSymbol: string;
   price: number;
-  showBuy: boolean;
   hRate: number;
-  dRate: number;
   marketCapValue: number;
   volumeValue: number;
   volumeCryptoValue: number;
-  circulatingSupply: number;
+  circulatingPrice: number;
 }
 
 const CoinTableRow: React.FC<CoinTableRowProps> = ({
@@ -42,13 +40,11 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
   coinIcon,
   coinSymbol,
   price,
-  showBuy,
   hRate,
-  dRate,
   marketCapValue,
   volumeValue,
   volumeCryptoValue,
-  circulatingSupply,
+  circulatingPrice,
 }) => {
   const router = useRouter();
 
@@ -65,7 +61,9 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
   };
 
   const formatNum = (num: number) => {
-    return Number(num.toFixed(2)).toLocaleString();
+    if (typeof num === "number") {
+      return Number(num.toFixed(2)).toLocaleString();
+    }
   };
 
   const coinIconHandler = () => {
@@ -206,19 +204,11 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
           <td className="cursor-pointer">
             <div className={styles.coinNameRow} onClick={viewCoinDetails}>
               <div className="mr-3 flex" onClick={viewCoinDetails}>
-                <div className="mr-2">{coinIconHandler()}</div>
+                <div className="mr-2">
+                  <Image src={coinIcon} alt={coinName} width={20} height={20} />
+                </div>
                 {coinName}
               </div>
-
-              <p>
-                {coinName === "Bitcoin" ||
-                coinName === "Ethereum" ||
-                coinName === "Tether" ? (
-                  <span className={styles.buyButton}>Buy</span>
-                ) : (
-                  <></>
-                )}
-              </p>
             </div>
           </td>
         ) : (
@@ -230,9 +220,6 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
         </td>
         <td>
           <Rate isIncrement={hRate > 0} rate={`${formatNum(hRate)}%`} />
-        </td>
-        <td>
-          <Rate isIncrement={dRate > 0} rate={`${formatNum(dRate)}%`} />
         </td>
 
         <td>
@@ -252,7 +239,7 @@ const CoinTableRow: React.FC<CoinTableRowProps> = ({
 
         <td>
           <div>
-            <p>{formatNum(circulatingSupply)}</p>
+            <p>{formatNum(circulatingPrice)}</p>
           </div>
         </td>
         <td className="cursor-pointer">

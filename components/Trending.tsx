@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import fire from "../assets/fire.png";
 import btc from "../assets/btc.png";
 import usdt from "../assets/usdt.png";
@@ -7,6 +7,7 @@ import recent from "../assets/recent.png";
 import ReactSwitch from "react-switch";
 import Rate from "./UI/Rate";
 import TrendingCard from "./UI/TrendingCard";
+import { CoinMarketContext } from "../context/context";
 
 const styles = {
   trendingWrapper: `mx-auto max-w-screen-2xl`,
@@ -14,35 +15,26 @@ const styles = {
   flexCenter: `flex justify-center items-center`,
 };
 
-const trendingData = [
-  {
-    number: 1,
-    symbol: "BTC",
-    name: "Bitcoin",
-    icon: btc,
-    isIncrement: true,
-    rate: "2.34%",
-  },
-  {
-    number: 2,
-    symbol: "USDT",
-    name: "Tether",
-    icon: usdt,
-    isIncrement: false,
-    rate: "9.23%",
-  },
-  {
-    number: 1,
-    symbol: "BTC",
-    name: "Bitcoin",
-    icon: btc,
-    isIncrement: true,
-    rate: "2.34%",
-  },
-];
-
 const Trending: React.FC = () => {
   const [checked, setChecked] = useState(false);
+  const [trendingData, setTrendingData] = useState([]);
+
+  const { getTrending } = useContext(CoinMarketContext);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const res = await getTrending();
+      setTrendingData(res);
+    } catch (err) {
+      console.log((err as Error).message);
+    }
+  }, [getTrending]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log(typeof trendingData, trendingData);
 
   return (
     <div className="text-white ">
@@ -78,16 +70,6 @@ const Trending: React.FC = () => {
           <TrendingCard
             title="Trending"
             icon={fire}
-            trendingData={trendingData}
-          />
-          <TrendingCard
-            title="Biggest Gainers"
-            icon={gainers}
-            trendingData={trendingData}
-          />
-          <TrendingCard
-            title="Recently Added"
-            icon={recent}
             trendingData={trendingData}
           />
         </div>

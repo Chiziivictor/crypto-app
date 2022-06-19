@@ -6,20 +6,13 @@ import Rate from "./Rate";
 interface TrendingCardProps {
   title: string;
   icon: StaticImageData;
-  trendingData: {
-    number: number;
-    symbol: string;
-    name: string;
-    icon: StaticImageData;
-    isIncrement: boolean;
-    rate: string;
-  }[];
+  trendingData: any[];
 }
 
 const styles = {
-  trendingCard: `w-full p-5 py-3 pb-0 bg-[#323546] rounded-xl text-white mr-3`,
+  trendingCard: `w-3/4 p-5 py-3 pb-0 bg-[#323546] rounded-xl text-white mr-3`,
   trendingCardWrapper: `flex items-center justify-between`,
-  trendingCardRow: `flex items-center justify-between mb-4 text-[0.93rem]`,
+  trendingCardRow: `w-64 flex items-center justify-between mb-4 text-[0.93rem]`,
 };
 
 const TrendingCard: React.FC<TrendingCardProps> = ({
@@ -40,21 +33,22 @@ const TrendingCard: React.FC<TrendingCardProps> = ({
         <MoreButton />
       </div>
       <br />
-      {trendingData.map((item, idx) => (
-        <div className={styles.trendingCardRow} key={idx}>
-          <p className="opacity-40">{item.number}</p>
-          <div className="w-full flex">
-            <div className="mx-5">
-              {icon && <Image src={item.icon} width={20} height={20} />}
+      <div className="flex flex-wrap justify-around">
+        {trendingData.map(({ item }) => (
+          <div className={styles.trendingCardRow} key={item.score}>
+            <p className="opacity-40">{item.score + 1}</p>
+            <div className="w-full flex">
+              <div className="mx-5 mr-2">
+                {icon && <Image src={item.thumb} width={20} height={20} />}
+              </div>
+              <p className="font-bold">
+                {item.name}
+                <span className="text-gray-400"> {item.symbol}</span>
+              </p>
             </div>
-            <p className="font-bold">
-              {item.name}
-              <span className="text-gray-400"> {item.symbol}</span>
-            </p>
           </div>
-          <Rate isIncrement={item.isIncrement} rate={item.rate} />
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
